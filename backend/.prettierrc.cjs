@@ -4,4 +4,4 @@ module.exports = {
   trailingComma: "all",
   useTabs: false,
   semi: false,
-};
+}
