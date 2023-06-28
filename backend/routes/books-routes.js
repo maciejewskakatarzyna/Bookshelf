@@ -63,6 +63,17 @@ router.get("/publisher/:pid", (req, res, next) => {
   res.json({ books })
 })
 
+//GET all books by category
+router.get("/category/:category", (req, res, next) => {
+  const category = req.params.category
+
+  const books = DUMMY_BOOKS.filter((b) => {
+    return b.category.toLowerCase() === category.toLowerCase()
+  })
+
+  res.json({ books })
+})
+
 //POST new book
 router.post("/", (req, res, next) => {
   const {
