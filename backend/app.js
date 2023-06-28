@@ -5,6 +5,6 @@ const booksRoutes = require("./routes/books-routes")
 const app = express()
 const port = 4000
 
-app.use(booksRoutes)
+app.use("/api/books", booksRoutes)
 
 app.listen(port)

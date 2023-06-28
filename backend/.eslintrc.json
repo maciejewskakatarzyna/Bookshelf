@@ -1,11 +1,11 @@
-{    "parserOptions": {
-  "ecmaVersion": "latest"
-},
-
-"env": {
-  "es6": true
-},
 {
-    "extends": ["prettier"]
-  }
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+
+  "env": {
+    "es6": true
+  },
+
+  "extends": ["prettier"]
 }
