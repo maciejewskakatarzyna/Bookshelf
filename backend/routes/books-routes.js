@@ -41,6 +41,28 @@ router.get("/:bid", (req, res, next) => {
   res.json({ book })
 })
 
+//GET all books by author id
+router.get("/author/:aid", (req, res, next) => {
+  const authorId = req.params.aid
+
+  const books = DUMMY_BOOKS.filter((b) => {
+    return b.author.id === authorId
+  })
+
+  res.json({ books })
+})
+
+//GET all books by publisher id
+router.get("/publisher/:pid", (req, res, next) => {
+  const publisherId = req.params.pid
+
+  const books = DUMMY_BOOKS.filter((b) => {
+    return b.publisher.id === publisherId
+  })
+
+  res.json({ books })
+})
+
 //POST new book
 router.post("/", (req, res, next) => {
   const {
