@@ -2,7 +2,7 @@ const express = require("express")
 
 const router = express.Router()
 
-const DUMMY_BOOKS = [
+let DUMMY_BOOKS = [
   {
     id: "b1",
     title: "Harry Potter i Kamień Filozoficzny",
@@ -22,7 +22,7 @@ const DUMMY_BOOKS = [
     isbn: "9788377580738",
     category: "Fantasy",
     cover: "",
-    //TODO add rating, reading status
+    //TODO add rating, reading status, filters
     //TODO add cover as URL or file upload
   },
 ]
@@ -134,6 +134,17 @@ router.patch("/:bid", (req, res, next) => {
   DUMMY_BOOKS[bookIndex] = { ...DUMMY_BOOKS[bookIndex], ...updatedBook }
 
   res.status(200).json({ book: DUMMY_BOOKS[bookIndex] })
+})
+
+//DELETE book by book id
+router.delete("/:bid", (req, res, next) => {
+  const bookId = req.params.bid
+
+  DUMMY_BOOKS = DUMMY_BOOKS.filter((b) => {
+    return b.id !== bookId
+  })
+
+  res.status(200).json({ message: "Book deleted" })
 })
 
 module.exports = router
