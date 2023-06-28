@@ -41,4 +41,33 @@ router.get("/:bid", (req, res, next) => {
   res.json({ book })
 })
 
+//POST new book
+router.post("/", (req, res, next) => {
+  const {
+    title,
+    author,
+    description,
+    publisher,
+    year,
+    pages,
+    isbn,
+    category,
+    cover,
+  } = req.body
+  const createdBook = {
+    title,
+    author,
+    description,
+    publisher,
+    year,
+    pages,
+    isbn,
+    category,
+    cover,
+  }
+
+  DUMMY_BOOKS.push(createdBook)
+  res.status(201).json({ book: createdBook })
+})
+
 module.exports = router
