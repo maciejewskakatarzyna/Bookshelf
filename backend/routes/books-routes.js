@@ -22,6 +22,8 @@ const DUMMY_BOOKS = [
     isbn: "9788377580738",
     category: "Fantasy",
     cover: "",
+    //TODO add rating, reading status
+    //TODO add cover as URL or file upload
   },
 ]
 
@@ -101,6 +103,37 @@ router.post("/", (req, res, next) => {
 
   DUMMY_BOOKS.push(createdBook)
   res.status(201).json({ book: createdBook })
+})
+
+//PATCH book by book id (update)
+router.patch("/:bid", (req, res, next) => {
+  const bookId = req.params.bid
+
+  let updatedBook = {}
+
+  for (let key of [
+    "title",
+    "author",
+    "description",
+    "publisher",
+    "year",
+    "pages",
+    "isbn",
+    "category",
+    "cover",
+  ]) {
+    if (req.body[key] !== undefined) {
+      updatedBook[key] = req.body[key]
+    }
+  }
+
+  const bookIndex = DUMMY_BOOKS.findIndex((b) => {
+    return b.id === bookId
+  })
+
+  DUMMY_BOOKS[bookIndex] = { ...DUMMY_BOOKS[bookIndex], ...updatedBook }
+
+  res.status(200).json({ book: DUMMY_BOOKS[bookIndex] })
 })
 
 module.exports = router
