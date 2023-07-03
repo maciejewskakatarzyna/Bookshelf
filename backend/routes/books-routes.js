@@ -22,7 +22,8 @@ let DUMMY_BOOKS = [
     isbn: "9788377580738",
     category: "Fantasy",
     cover: "",
-    //TODO add rating, reading status, filters
+    rating: 5,
+    readingStatus: "read",
     //TODO add cover as URL or file upload
   },
 ]
@@ -86,6 +87,28 @@ router.get("/category/:category", (req, res, next) => {
 
   const books = DUMMY_BOOKS.filter((b) => {
     return b.category.toLowerCase() === category.toLowerCase()
+  })
+
+  res.json({ books })
+})
+
+//GET all books by rating
+router.get("/rating/:rating", (req, res, next) => {
+  const rating = req.params.rating
+
+  const books = DUMMY_BOOKS.filter((b) => {
+    return b.rating.toString() === rating.toString()
+  })
+
+  res.json({ books })
+})
+
+//GET all books by reading status
+router.get("/reading-status/:status", (req, res, next) => {
+  const status = req.params.status
+
+  const books = DUMMY_BOOKS.filter((b) => {
+    return b.readingStatus.toLowerCase() === status.toLowerCase()
   })
 
   res.json({ books })
