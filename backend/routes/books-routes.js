@@ -27,7 +27,22 @@ let DUMMY_BOOKS = [
   },
 ]
 
-//GET all books
+//Filter books by query params
+router.get("/", (req, res, next) => {
+  const queryParams = req.query
+
+  const filteredBooks = DUMMY_BOOKS.filter((b) => {
+    let isValid = true
+    for (key in queryParams) {
+      isValid = isValid && b[key] == queryParams[key]
+    }
+    return isValid
+  })
+
+  res.json({ books: filteredBooks })
+})
+
+//GET all books - I'm not sure if we need this
 router.get("/", (req, res, next) => {
   res.json({ books: DUMMY_BOOKS })
 })
