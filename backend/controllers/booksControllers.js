@@ -1,5 +1,7 @@
 const uuid = require("uuid/v4")
 
+const HttpError = require("../models/http-error")
+
 let DUMMY_BOOKS = [
   {
     id: "b1",
@@ -51,6 +53,10 @@ const getBooksById = (req, res, next) => {
     return b.id === bookId
   })
 
+  if (!book) {
+    throw new HttpError("Could not find a book for the provided id.", 404)
+  }
+
   res.json({ book })
 }
 
@@ -60,6 +66,13 @@ const getBooksByAuthorId = (req, res, next) => {
   const books = DUMMY_BOOKS.filter((b) => {
     return b.author.id === authorId
   })
+
+  if (books.length === 0) {
+    throw new HttpError(
+      "Could not find a book for the provided author id.",
+      404,
+    )
+  }
 
   res.json({ books })
 }
@@ -71,6 +84,13 @@ const getBooksByPublisherId = (req, res, next) => {
     return b.publisher.id === publisherId
   })
 
+  if (books.length === 0) {
+    throw new HttpError(
+      "Could not find a book for the provided publisher id.",
+      404,
+    )
+  }
+
   res.json({ books })
 }
 
@@ -80,6 +100,10 @@ const getBooksByCategory = (req, res, next) => {
   const books = DUMMY_BOOKS.filter((b) => {
     return b.category.toLowerCase() === category.toLowerCase()
   })
+
+  if (books.length === 0) {
+    throw new HttpError("Could not find a book for the provided category.", 404)
+  }
 
   res.json({ books })
 }
@@ -91,6 +115,10 @@ const getBooksByRating = (req, res, next) => {
     return b.rating.toString() === rating.toString()
   })
 
+  if (books.length === 0) {
+    throw new HttpError("Could not find a book for the provided rating.", 404)
+  }
+
   res.json({ books })
 }
 
@@ -100,6 +128,13 @@ const getBooksByReadingStatus = (req, res, next) => {
   const books = DUMMY_BOOKS.filter((b) => {
     return b.readingStatus.toLowerCase() === status.toLowerCase()
   })
+
+  if (books.length === 0) {
+    throw new HttpError(
+      "Could not find a book for the provided reading status.",
+      404,
+    )
+  }
 
   res.json({ books })
 }
