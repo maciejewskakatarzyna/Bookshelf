@@ -1,6 +1,6 @@
-const uuid = require("uuid/v4")
+const uuid = require("uuid")
 
-const HttpError = require("../models/http-error")
+const HttpError = require("../models/httpError")
 
 let DUMMY_BOOKS = [
   {
@@ -152,7 +152,7 @@ const createBook = (req, res, next) => {
     cover,
   } = req.body
   const createdBook = {
-    id: uuid(),
+    id: uuid.v4(),
     title,
     author,
     description,
