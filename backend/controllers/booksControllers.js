@@ -1,145 +1,83 @@
 const uuid = require("uuid")
 
 const HttpError = require("../models/httpError")
+const Book = require("../models/booksModel")
 
-let DUMMY_BOOKS = [
-  {
-    id: "b1",
-    title: "Harry Potter i Kamień Filozoficzny",
-    author: {
-      id: "a1",
-      firstName: "J.K.",
-      lastName: "Rowling",
-    },
-    description:
-      "Pierwsza część przygód młodego czarodzieja Harry'ego Pottera.",
-    publisher: {
-      id: "p1",
-      name: "Media Rodzina",
-    },
-    year: 2016,
-    pages: 328,
-    isbn: "9788377580738",
-    category: "Fantasy",
-    cover: "",
-    //TODO add cover as URL or file upload
-    rating: 5,
-    readingStatus: "read",
-  },
-]
-
-const filterBooksByParams = (req, res, next) => {
+const filterBooksByParams = async (req, res, next) => {
   const queryParams = req.query
-
-  const filteredBooks = DUMMY_BOOKS.filter((b) => {
-    let isValid = true
-    for (key in queryParams) {
-      isValid = isValid && b[key] == queryParams[key]
-    }
-    return isValid
-  })
-
+  const filteredBooks = await Book.find(queryParams)
   res.json({ books: filteredBooks })
 }
 
-const getAllBooks = (req, res, next) => {
-  res.json({ books: DUMMY_BOOKS })
+const getAllBooks = async (req, res, next) => {
+  const allBooks = await Book.find({})
+  res.json({ books: allBooks })
 }
 
-const getBooksById = (req, res, next) => {
+const getBooksById = async (req, res, next) => {
   const bookId = req.params.bid
-
-  const book = DUMMY_BOOKS.find((b) => {
-    return b.id === bookId
-  })
-
+  const book = await Book.findById(bookId)
   if (!book) {
     throw new HttpError("Could not find a book for the provided id.", 404)
   }
-
   res.json({ book })
 }
 
-const getBooksByAuthorId = (req, res, next) => {
+const getBooksByAuthorId = async (req, res, next) => {
   const authorId = req.params.aid
-
-  const books = DUMMY_BOOKS.filter((b) => {
-    return b.author.id === authorId
-  })
-
-  if (books.length === 0) {
+  const books = await Book.find({ "author.id": authorId })
+  if (!books || books.length === 0) {
     throw new HttpError(
       "Could not find a book for the provided author id.",
       404,
     )
   }
-
   res.json({ books })
 }
 
-const getBooksByPublisherId = (req, res, next) => {
+const getBooksByPublisherId = async (req, res, next) => {
   const publisherId = req.params.pid
-
-  const books = DUMMY_BOOKS.filter((b) => {
-    return b.publisher.id === publisherId
-  })
-
-  if (books.length === 0) {
+  const books = await Book.find({ "publisher.id": publisherId })
+  if (!books || books.length === 0) {
     throw new HttpError(
       "Could not find a book for the provided publisher id.",
       404,
     )
   }
-
   res.json({ books })
 }
 
-const getBooksByCategory = (req, res, next) => {
+const getBooksByCategory = async (req, res, next) => {
   const category = req.params.category
-
-  const books = DUMMY_BOOKS.filter((b) => {
-    return b.category.toLowerCase() === category.toLowerCase()
-  })
-
-  if (books.length === 0) {
+  const books = await Book.find({ category: new RegExp(category, "i") })
+  if (!books || books.length === 0) {
     throw new HttpError("Could not find a book for the provided category.", 404)
   }
-
   res.json({ books })
 }
 
-const getBooksByRating = (req, res, next) => {
+const getBooksByRating = async (req, res, next) => {
   const rating = req.params.rating
-
-  const books = DUMMY_BOOKS.filter((b) => {
-    return b.rating.toString() === rating.toString()
-  })
-
-  if (books.length === 0) {
+  const books = await Book.find({ rating: rating })
+  if (!books || books.length === 0) {
     throw new HttpError("Could not find a book for the provided rating.", 404)
   }
-
   res.json({ books })
 }
 
-const getBooksByReadingStatus = (req, res, next) => {
+const getBooksByReadingStatus = async (req, res, next) => {
   const status = req.params.status
-
-  const books = DUMMY_BOOKS.filter((b) => {
-    return b.readingStatus.toLowerCase() === status.toLowerCase()
-  })
-
-  if (books.length === 0) {
+  const books = await Book.find({ readingStatus: new RegExp(status, "i") })
+  if (!books || books.length === 0) {
     throw new HttpError(
       "Could not find a book for the provided reading status.",
       404,
     )
   }
-
   res.json({ books })
 }
 
-const createBook = (req, res, next) => {
+const createBook = async (req, res, next) => {
   const {
     title,
     author,
@@ -151,8 +89,8 @@ const createBook = (req, res, next) => {
     category,
     cover,
   } = req.body
-  const createdBook = {
-    id: uuid.v4(),
+
+  const createdBook = new Book({
     title,
     author,
     description,
@@ -162,49 +100,26 @@ const createBook = (req, res, next) => {
     isbn,
     category,
     cover,
-  }
+  })
 
-  DUMMY_BOOKS.push(createdBook)
+  await createdBook.save()
   res.status(201).json({ book: createdBook })
 }
 
-const updateBook = (req, res, next) => {
+const updateBook = async (req, res, next) => {
   const bookId = req.params.bid
-
-  let updatedBook = {}
-
-  for (let key of [
-    "title",
-    "author",
-    "description",
-    "publisher",
-    "year",
-    "pages",
-    "isbn",
-    "category",
-    "cover",
-  ]) {
-    if (req.body[key] !== undefined) {
-      updatedBook[key] = req.body[key]
-    }
-  }
-
-  const bookIndex = DUMMY_BOOKS.findIndex((b) => {
-    return b.id === bookId
+  const updatedBook = await Book.findByIdAndUpdate(bookId, req.body, {
+    new: true,
   })
-
-  DUMMY_BOOKS[bookIndex] = { ...DUMMY_BOOKS[bookIndex], ...updatedBook }
-
-  res.status(200).json({ book: DUMMY_BOOKS[bookIndex] })
+  if (!updatedBook) {
+    throw new HttpError("Error updating book.", 404)
+  }
+  res.status(200).json({ book: updatedBook })
 }
 
-const deleteBook = (req, res, next) => {
+const deleteBook = async (req, res, next) => {
   const bookId = req.params.bid
-
-  DUMMY_BOOKS = DUMMY_BOOKS.filter((b) => {
-    return b.id !== bookId
-  })
-
+  await Book.findByIdAndRemove(bookId)
   res.status(200).json({ message: "Book deleted" })
 }
 
