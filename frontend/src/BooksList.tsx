@@ -35,6 +35,14 @@ const BooksList = () => {
     return data.books as Book[]
   }
 
+  const deleteBook = async (id: string) => {
+    await fetch(`http://localhost:4000/api/books/${id}`, {
+      method: "DELETE",
+    })
+    const newBooks = books.filter((book) => book._id !== id)
+    setBooks(newBooks)
+  }
+
   useEffect(() => {
     fetchBooks().then((data) => {
       setBooks(data)
@@ -48,7 +56,8 @@ const BooksList = () => {
           books.map((book) => (
             <li key={book._id}>
               {book.title}
-              <p>
+              <button onClick={() => deleteBook(book._id)}>Delete</button>
+              {/* <p>
                 {book.author?.firstName} {book.author?.lastName}
               </p>
               <p>{book.description}</p>
@@ -59,7 +68,7 @@ const BooksList = () => {
               <p>{book.category}</p>
               <p>{book.cover}</p>
               <p>{book.rating}</p>
-              <p>{book.readingStatus}</p>
+              <p>{book.readingStatus}</p> */}
             </li>
           ))}
       </ul>
