@@ -2,21 +2,28 @@ require("dotenv").config({ path: "../.env" })
 const express = require("express")
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
+const { createBooksRouter } = require("./books/booksRoutes")
+const { createBooksControllers } = require("./books/booksControllers")
+const Book = require("./books/booksModel")
 
-const booksRoutes = require("./routes/booksRoutes")
+function createApp(bookModel, controllersCreator, routerCreator) {
+  const app = express()
 
-const app = express()
+  app.use(bodyParser.json())
 
-app.use(bodyParser.json())
+  const booksControllers = controllersCreator(bookModel)
+  const booksRouter = routerCreator(booksControllers)
+  app.use("/api/books", booksRouter)
 
-app.use("/api/books", booksRoutes)
+  return app
+}
 
 const dbUri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.zpjboon.mongodb.net/books?retryWrites=true&w=majority`
-const port = 4000
-
 mongoose
   .connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
+    const port = 4000
+    const app = createApp(Book, createBooksControllers, createBooksRouter)
     app.listen(port)
     console.log("Connected to MongoDB!")
   })
