@@ -1,7 +1,12 @@
 import "./App.css"
+import BooksList from "./BooksList"
 
 function App() {
-  return <div></div>
+  return (
+    <div>
+      <BooksList />
+    </div>
+  )
 }
 
 export default App
