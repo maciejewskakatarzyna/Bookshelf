@@ -36,9 +36,17 @@ const BooksList = () => {
   }
 
   const deleteBook = async (id: string) => {
-    await fetch(`http://localhost:4000/api/books/${id}`, {
+    const response = await fetch(`http://localhost:4000/api/books/${id}`, {
       method: "DELETE",
     })
+
+    if (response.ok) {
+      const responseBody = await response.json()
+      console.log(responseBody.message)
+    } else {
+      console.log("Error with deletion:", response.status)
+    }
+
     const newBooks = books.filter((book) => book._id !== id)
     setBooks(newBooks)
   }
