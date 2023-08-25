@@ -1,17 +1,15 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
-type Author = {
-  _id: string
+export type Author = {
   firstName: string
   lastName: string
 }
 
-type Publisher = {
-  _id: string
+export type Publisher = {
   name: string
 }
 
-type Book = {
+export type Book = {
   _id: string
   title: string
   author: Author
@@ -26,36 +24,13 @@ type Book = {
   readingStatus?: string
 }
 
-const BooksList = () => {
-  const [books, setBooks] = useState<Book[]>([])
+type BooksListProps = {
+  books: Book[]
+  deleteBook: (id: string) => void
+}
 
-  const fetchBooks = async () => {
-    const response = await fetch("http://localhost:4000/api/books")
-    const data = await response.json()
-    return data.books as Book[]
-  }
-
-  const deleteBook = async (id: string) => {
-    const response = await fetch(`http://localhost:4000/api/books/${id}`, {
-      method: "DELETE",
-    })
-
-    if (response.ok) {
-      const responseBody = await response.json()
-      console.log(responseBody.message)
-    } else {
-      console.log("Error with deletion:", response.status)
-    }
-
-    const newBooks = books.filter((book) => book._id !== id)
-    setBooks(newBooks)
-  }
-
-  useEffect(() => {
-    fetchBooks().then((data) => {
-      setBooks(data)
-    })
-  }, [])
+const BooksList = ({ books, deleteBook }: BooksListProps) => {
+  const [visibleBookId, setVisibleBookId] = useState<string | null>(null)
 
   return (
     <div>
@@ -63,20 +38,31 @@ const BooksList = () => {
         {books.length > 0 &&
           books.map((book) => (
             <li key={book._id}>
-              {book.title}
+              <p>{book.title}</p>
+              <button
+                onClick={() =>
+                  setVisibleBookId(visibleBookId === book._id ? null : book._id)
+                }
+              >
+                {visibleBookId === book._id ? "Hide details" : "Show details"}
+              </button>{" "}
               <button onClick={() => deleteBook(book._id)}>Delete</button>
-              {/* <p>
-                {book.author?.firstName} {book.author?.lastName}
-              </p>
-              <p>{book.description}</p>
-              <p>{book.publisher?.name}</p>
-              <p>{book.year}</p>
-              <p>{book.pages}</p>
-              <p>{book.isbn}</p>
-              <p>{book.category}</p>
-              <p>{book.cover}</p>
-              <p>{book.rating}</p>
-              <p>{book.readingStatus}</p> */}
+              {visibleBookId === book._id && (
+                <>
+                  <p>
+                    {book.author?.firstName} {book.author?.lastName}
+                  </p>
+                  <p>{book.description}</p>
+                  <p>{book.publisher?.name}</p>
+                  <p>{book.year}</p>
+                  <p>{book.pages}</p>
+                  <p>{book.isbn}</p>
+                  <p>{book.category}</p>
+                  <p>{book.cover}</p>
+                  <p>{book.rating}</p>
+                  <p>{book.readingStatus}</p>
+                </>
+              )}
             </li>
           ))}
       </ul>

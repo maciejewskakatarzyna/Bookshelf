@@ -1,10 +1,9 @@
-import "./App.css"
-import BooksList from "./BooksList"
+import BooksPage from "./BooksPage"
 
 function App() {
   return (
-    <div>
-      <BooksList />
+    <div className="container">
+      <BooksPage />
     </div>
   )
 }
