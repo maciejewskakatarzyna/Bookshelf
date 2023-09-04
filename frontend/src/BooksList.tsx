@@ -27,42 +27,60 @@ export type Book = {
 type BooksListProps = {
   books: Book[]
   deleteBook: (id: string) => void
+  getBooks: () => void
+  getBooksBtnVisible: boolean
 }
 
-const BooksList = ({ books, deleteBook }: BooksListProps) => {
+const BooksList = ({
+  books,
+  deleteBook,
+  getBooks,
+  getBooksBtnVisible,
+}: BooksListProps) => {
   const [visibleBookId, setVisibleBookId] = useState<string | null>(null)
 
   return (
     <div>
+      <button
+        style={{ display: getBooksBtnVisible ? "block" : "none" }}
+        onClick={getBooks}
+      >
+        Get books
+      </button>
+
       <ul>
         {books.length > 0 &&
           books.map((book) => (
             <li key={book._id}>
-              <p>{book.title}</p>
-              <button
-                onClick={() =>
-                  setVisibleBookId(visibleBookId === book._id ? null : book._id)
-                }
-              >
-                {visibleBookId === book._id ? "Hide details" : "Show details"}
-              </button>{" "}
-              <button onClick={() => deleteBook(book._id)}>Delete</button>
-              {visibleBookId === book._id && (
-                <>
-                  <p>
-                    {book.author?.firstName} {book.author?.lastName}
-                  </p>
-                  <p>{book.description}</p>
-                  <p>{book.publisher?.name}</p>
-                  <p>{book.year}</p>
-                  <p>{book.pages}</p>
-                  <p>{book.isbn}</p>
-                  <p>{book.category}</p>
-                  <p>{book.cover}</p>
-                  <p>{book.rating}</p>
-                  <p>{book.readingStatus}</p>
-                </>
-              )}
+              <div>
+                <p
+                  onClick={() =>
+                    setVisibleBookId(
+                      visibleBookId === book._id ? null : book._id,
+                    )
+                  }
+                  className="title"
+                >
+                  {book.title}
+                </p>
+                {visibleBookId === book._id && (
+                  <>
+                    <p>
+                      {book.author?.firstName} {book.author?.lastName}
+                    </p>
+                    <p>{book.description}</p>
+                    <p>{book.publisher?.name}</p>
+                    <p>{book.year}</p>
+                    <p>{book.pages}</p>
+                    <p>{book.isbn}</p>
+                    <p>{book.category}</p>
+                    <p>{book.cover}</p>
+                    <p>{book.rating}</p>
+                    <p>{book.readingStatus}</p>
+                  </>
+                )}
+              </div>
+              <button onClick={() => deleteBook(book._id)}>X</button>
             </li>
           ))}
       </ul>

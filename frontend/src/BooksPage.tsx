@@ -5,6 +5,9 @@ import AddBookForm from "./AddBookForm"
 
 const BooksPage = () => {
   const [books, setBooks] = useState<Book[]>([])
+  const [isGetBooksVisible, setIsGetBooksVisible] = useState<boolean>(true)
+  const [isAddBookFormVisible, setIsAddBookFormVisible] =
+    useState<boolean>(false)
 
   const fetchBooks = async () => {
     const response = await fetch("http://localhost:4000/api/books")
@@ -14,6 +17,7 @@ const BooksPage = () => {
 
   const addBook = (newBook: Book) => {
     setBooks((prevBooks) => [...prevBooks, newBook])
+    setIsAddBookFormVisible(false)
   }
 
   const deleteBook = async (id: string) => {
@@ -26,16 +30,27 @@ const BooksPage = () => {
     }
   }
 
-  const handleGetBooksClick = async () => {
+  const getBooks = async () => {
     const fetchedBooks = await fetchBooks()
     setBooks(fetchedBooks)
+    setIsGetBooksVisible(false)
   }
 
   return (
     <>
-      <button onClick={handleGetBooksClick}>Get books</button>
-      <AddBookForm addBook={addBook} />
-      <BooksList books={books} deleteBook={deleteBook} />
+      <BooksList
+        books={books}
+        deleteBook={deleteBook}
+        getBooks={getBooks}
+        getBooksBtnVisible={isGetBooksVisible}
+      />
+      {isAddBookFormVisible ? (
+        <AddBookForm addBook={addBook} />
+      ) : (
+        <button onClick={() => setIsAddBookFormVisible(true)}>
+          Add new book
+        </button>
+      )}
     </>
   )
 }

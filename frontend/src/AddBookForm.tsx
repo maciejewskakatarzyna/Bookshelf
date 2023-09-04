@@ -98,7 +98,6 @@ const AddBookForm = ({ addBook }: AddBookFormProps) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Add a new book</h2>
       <label htmlFor="title">Title</label>
       <input
         type="text"
@@ -108,6 +107,7 @@ const AddBookForm = ({ addBook }: AddBookFormProps) => {
         onChange={handleInputChange}
       />
       <label htmlFor="author">Author</label>
+      <label htmlFor="authorFirstName">First name</label>
       <input
         type="text"
         name="authorFirstName"
@@ -115,6 +115,7 @@ const AddBookForm = ({ addBook }: AddBookFormProps) => {
         value={book.author.firstName}
         onChange={handleInputChange}
       />
+      <label htmlFor="authorLastName">Last name</label>
       <input
         type="text"
         name="authorLastName"
