@@ -1,5 +1,6 @@
 require("dotenv").config({ path: "../.env" })
 const express = require("express")
+const cors = require("cors")
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const { createBooksRouter } = require("./books/booksRoutes")
@@ -8,6 +9,13 @@ const Book = require("./books/booksModel")
 
 function createApp(bookModel, controllersCreator, routerCreator) {
   const app = express()
+
+  const corsOptions = {
+    origin: "http://127.0.0.1:5173",
+    optionsSuccessStatus: 200,
+  }
+
+  app.use(cors(corsOptions))
 
   app.use(bodyParser.json())
 

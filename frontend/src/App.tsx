@@ -1,9 +1,9 @@
-import "./App.css"
+import BooksPage from "./BooksPage"
 
 function App() {
   return (
-    <div>
-      <h1>Hello world (frontend)</h1>
+    <div className="container">
+      <BooksPage />
     </div>
   )
 }
