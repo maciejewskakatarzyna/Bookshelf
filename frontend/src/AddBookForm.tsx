@@ -31,13 +31,16 @@ const AddBookForm = ({ addBook }: AddBookFormProps) => {
       readingStatus: formRef.current.readingStatus.value,
     }
 
-    const response = await fetch("http://localhost:4000/api/books", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      "https://bookshelf-km-21fc3017c70c.herokuapp.com/api/books",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newBook),
       },
-      body: JSON.stringify(newBook),
-    })
+    )
 
     if (response.ok) {
       const responseBody = await response.json()
