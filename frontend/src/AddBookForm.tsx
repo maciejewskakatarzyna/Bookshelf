@@ -33,6 +33,8 @@ const AddBookForm = ({ addBook }: AddBookFormProps) => {
       readingStatus: formRef.current.readingStatus.value,
     }
 
+    console.log(newBook)
+
     const response = await fetch(
       "https://bookshelf-km-21fc3017c70c.herokuapp.com/api/books",
       {
