@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import { Book } from "./BooksList"
 
 type AddBookFormProps = {
@@ -74,7 +74,9 @@ const AddBookForm = ({ addBook }: AddBookFormProps) => {
         <option value="Reading">Reading</option>
         <option value="Finished">Finished</option>
       </select>
-      <button onClick={setIsDetailsFormShown}>Add more details</button>
+      <button onClick={() => setIsDetailsFormShown(!isDetailsFormShown)}>
+        Add more details
+      </button>
       {isDetailsFormShown && (
         <>
           <label htmlFor="description">Description</label>
