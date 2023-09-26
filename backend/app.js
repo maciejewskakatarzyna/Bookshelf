@@ -34,7 +34,7 @@ const dbUri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@c
 mongoose
   .connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    const port = process.env.PORT || 5000
+    const port = process.env.PORT || 4000
     const app = createApp(Book, createBooksControllers, createBooksRouter)
     app.listen(port)
     console.log("Connected to MongoDB!")
