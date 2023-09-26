@@ -30,6 +30,10 @@ function createApp(bookModel, controllersCreator, routerCreator) {
   return app
 }
 
+app.get("/", (req, res) => {
+  res.send("Hello, world!")
+})
+
 const dbUri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.zpjboon.mongodb.net/books?retryWrites=true&w=majority`
 mongoose
   .connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true })
