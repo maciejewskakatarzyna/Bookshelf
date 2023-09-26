@@ -29,6 +29,9 @@ const BooksPage = () => {
       `https://bookshelf-km-21fc3017c70c.herokuapp.com/api/books/${id}`,
       {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
     )
 
