@@ -15,7 +15,6 @@ const authorSchema = new Schema({
 const publisherSchema = new Schema({
   name: {
     type: String,
-    required: true,
   },
 })
 
@@ -41,7 +40,6 @@ const bookSchema = new Schema({
   },
   category: {
     type: String,
-    required: true,
   },
   cover: {
     type: String,
@@ -51,6 +49,7 @@ const bookSchema = new Schema({
   },
   readingStatus: {
     type: String,
+    enum: ["Want to read", "Reading", "Finished"],
   },
 })
 

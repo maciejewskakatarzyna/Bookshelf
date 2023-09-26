@@ -6,6 +6,8 @@ type AddBookFormProps = {
 }
 
 const AddBookForm = ({ addBook }: AddBookFormProps) => {
+  const [isDetailsFormShown, setIsDetailsFormShown] = useState(false)
+
   const formRef = useRef<any>(null)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -66,24 +68,33 @@ const AddBookForm = ({ addBook }: AddBookFormProps) => {
       <input type="text" name="authorFirstName" id="authorFirstName" />
       <label htmlFor="authorLastName">Last name</label>
       <input type="text" name="authorLastName" id="authorLastName" />
-      <label htmlFor="description">Description</label>
-      <input type="text" name="description" id="description" />
-      <label htmlFor="publisher">Publisher</label>
-      <input type="text" name="publisher" id="publisher" />
-      <label htmlFor="year">Year</label>
-      <input type="number" name="year" id="year" />
-      <label htmlFor="pages">Pages</label>
-      <input type="number" name="pages" id="pages" />
-      <label htmlFor="isbn">ISBN</label>
-      <input type="text" name="isbn" id="isbn" />
-      <label htmlFor="category">Category</label>
-      <input type="text" name="category" id="category" />
-      <label htmlFor="cover">Cover</label>
-      <input type="text" name="cover" id="cover" />
-      <label htmlFor="rating">Rating</label>
-      <input type="number" name="rating" id="rating" />
       <label htmlFor="readingStatus">Reading Status</label>
-      <input type="text" name="readingStatus" id="readingStatus" />
+      <select name="readingStatus" id="readingStatus">
+        <option value="Want to read">Not started</option>
+        <option value="Reading">Reading</option>
+        <option value="Finished">Finished</option>
+      </select>
+      <button onClick={setIsDetailsFormShown}>Add more details</button>
+      {isDetailsFormShown && (
+        <>
+          <label htmlFor="description">Description</label>
+          <input type="text" name="description" id="description" />
+          <label htmlFor="publisher">Publisher</label>
+          <input type="text" name="publisher" id="publisher" />
+          <label htmlFor="year">Year</label>
+          <input type="number" name="year" id="year" />
+          <label htmlFor="pages">Pages</label>
+          <input type="number" name="pages" id="pages" />
+          <label htmlFor="isbn">ISBN</label>
+          <input type="text" name="isbn" id="isbn" />
+          <label htmlFor="category">Category</label>
+          <input type="text" name="category" id="category" />
+          <label htmlFor="cover">Cover</label>
+          <input type="text" name="cover" id="cover" />
+          <label htmlFor="rating">Rating</label>
+          <input type="number" name="rating" id="rating" />
+        </>
+      )}
       <button type="submit">Add book</button>
     </form>
   )
