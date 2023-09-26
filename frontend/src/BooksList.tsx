@@ -13,15 +13,15 @@ export type Book = {
   _id: string
   title: string
   author: Author
-  description: string
-  publisher: Publisher
-  year: number
-  pages: number
-  isbn: string
-  category: string
-  cover: string
+  description?: string
+  publisher?: Publisher
+  year?: number
+  pages?: number
+  isbn?: string
+  category?: string
+  cover?: string
   rating?: number
-  readingStatus?: string
+  readingStatus: string
 }
 
 type BooksListProps = {

@@ -20,20 +20,22 @@ const AddBookForm = ({ addBook }: AddBookFormProps) => {
         firstName: formRef.current.authorFirstName?.value,
         lastName: formRef.current.authorLastName.value,
       },
-      description: formRef.current.description?.value,
-      publisher: {
-        name: formRef.current.publisher?.value,
-      },
-      year: formRef.current.year?.value,
-      pages: formRef.current.pages?.value,
-      isbn: formRef.current.isbn?.value,
-      category: formRef.current.category?.value,
-      cover: formRef.current.cover?.value,
-      rating: formRef.current.rating?.value,
       readingStatus: formRef.current.readingStatus.value,
     }
 
-    console.log(newBook)
+    isDetailsFormShown &&
+      Object.assign(newBook, {
+        description: formRef.current.description?.value,
+        publisher: {
+          name: formRef.current.publisher?.value,
+        },
+        year: formRef.current.year?.value,
+        pages: formRef.current.pages?.value,
+        isbn: formRef.current.isbn?.value,
+        category: formRef.current.category?.value,
+        cover: formRef.current.cover?.value,
+        rating: formRef.current.rating?.value,
+      })
 
     const response = await fetch(
       "https://bookshelf-km-21fc3017c70c.herokuapp.com/api/books",
@@ -76,7 +78,10 @@ const AddBookForm = ({ addBook }: AddBookFormProps) => {
         <option value="Reading">Reading</option>
         <option value="Finished">Finished</option>
       </select>
-      <button onClick={() => setIsDetailsFormShown(!isDetailsFormShown)}>
+      <button
+        type="button"
+        onClick={() => setIsDetailsFormShown(!isDetailsFormShown)}
+      >
         Add more details
       </button>
       {isDetailsFormShown && (
