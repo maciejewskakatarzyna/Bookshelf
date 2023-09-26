@@ -16,6 +16,7 @@ function createApp(bookModel, controllersCreator, routerCreator) {
       "http://localhost:5173",
       "https://bookshelf-km.netlify.app/",
     ],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     optionsSuccessStatus: 200,
   }
 
