@@ -17,19 +17,19 @@ const AddBookForm = ({ addBook }: AddBookFormProps) => {
       _id: "",
       title: formRef.current.title.value,
       author: {
-        firstName: formRef.current.authorFirstName.value,
+        firstName: formRef.current.authorFirstName?.value,
         lastName: formRef.current.authorLastName.value,
       },
-      description: formRef.current.description.value,
+      description: formRef.current.description?.value,
       publisher: {
-        name: formRef.current.publisher.value,
+        name: formRef.current.publisher?.value,
       },
-      year: formRef.current.year.value,
-      pages: formRef.current.pages.value,
-      isbn: formRef.current.isbn.value,
-      category: formRef.current.category.value,
-      cover: formRef.current.cover.value,
-      rating: formRef.current.rating.value,
+      year: formRef.current.year?.value,
+      pages: formRef.current.pages?.value,
+      isbn: formRef.current.isbn?.value,
+      category: formRef.current.category?.value,
+      cover: formRef.current.cover?.value,
+      rating: formRef.current.rating?.value,
       readingStatus: formRef.current.readingStatus.value,
     }
 
