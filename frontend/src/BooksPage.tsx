@@ -10,7 +10,9 @@ const BooksPage = () => {
     useState<boolean>(false)
 
   const fetchBooks = async () => {
-    const response = await fetch("http://localhost:4000/api/books")
+    const response = await fetch(
+      "https://bookshelf-km-21fc3017c70c.herokuapp.com/api/books",
+    )
     const data = await response.json()
     return data.books as Book[]
   }
@@ -23,9 +25,12 @@ const BooksPage = () => {
   const deleteBook = async (id: string) => {
     const bookToDelete = books.find((book) => book._id === id)
 
-    const response = await fetch(`http://localhost:4000/api/books/${id}`, {
-      method: "DELETE",
-    })
+    const response = await fetch(
+      `https://bookshelf-km-21fc3017c70c.herokuapp.com/api/books/${id}`,
+      {
+        method: "DELETE",
+      },
+    )
 
     if (response.ok) {
       setBooks((prevBooks) => prevBooks.filter((book) => book._id !== id))
