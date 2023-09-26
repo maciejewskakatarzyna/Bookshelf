@@ -14,15 +14,12 @@ function createApp(bookModel, controllersCreator, routerCreator) {
     origin: [
       "http://127.0.0.1:5173",
       "http://localhost:5173",
-      "https://bookshelf-km.netlify.app/",
+      "https://bookshelf-km.netlify.app",
     ],
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     optionsSuccessStatus: 200,
-    preflightContinue: false,
-    allowedHeaders: ["Content-Type", "Authorization"],
   }
 
-  app.use(cors())
+  app.use(cors(corsOptions))
 
   app.use(bodyParser.json())
 
