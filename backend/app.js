@@ -27,12 +27,12 @@ function createApp(bookModel, controllersCreator, routerCreator) {
   const booksRouter = routerCreator(booksControllers)
   app.use("/api/books", booksRouter)
 
+  app.get("/", (req, res) => {
+    res.send("Hello, world!")
+  })
+
   return app
 }
-
-app.get("/", (req, res) => {
-  res.send("Hello, world!")
-})
 
 const dbUri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.zpjboon.mongodb.net/books?retryWrites=true&w=majority`
 mongoose
