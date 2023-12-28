@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 interface IBook {
   _id: string;
@@ -27,11 +27,12 @@ function BookDetails() {
 
   return (
     <div className="container p-10">
+      <Link to="/">⬅</Link>
       {book ? (
-        <>
+        <div className="mt-6">
           <h2 className="text-lg font-bold">{book.title}</h2>
           <p>{book.author}</p>
-        </>
+        </div>
       ) : (
         <p>Loading...</p>
       )}
