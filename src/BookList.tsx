@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 interface IBook {
   _id: string;
@@ -94,7 +95,9 @@ function BookList() {
       {randomBook && (
         <>
           <div className="mb-4" key={randomBook._id}>
-            <h2 className="text-lg font-bold">{randomBook.title}</h2>
+            <Link to={`/book/${randomBook._id}`}>
+              <h2 className="text-lg font-bold">{randomBook.title}</h2>
+            </Link>
             <p>{randomBook.author}</p>
           </div>
           <button
@@ -113,7 +116,9 @@ function BookList() {
       )}
       {books.map((book) => (
         <div className="mb-4" key={book._id}>
-          <h2 className="text-lg font-bold">{book.title}</h2>
+          <Link to={`/book/${book._id}`}>
+            <h2 className="text-lg font-bold">{book.title}</h2>
+          </Link>
           <p>{book.author}</p>
         </div>
       ))}

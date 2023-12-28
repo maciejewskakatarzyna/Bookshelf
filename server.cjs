@@ -59,6 +59,18 @@ app.patch("/books/:id", async (req, res) => {
   }
 });
 
+app.get("/books/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const book = await Book.findById(id);
+    res.json(book);
+  } catch (err) {
+    res.status(404).json({ message: `No book with id: ${id}` });
+    console.error(err);
+  }
+});
+
 app.listen(3000, () =>
   console.log("Server is running on http://localhost:3000"),
 );
