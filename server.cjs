@@ -35,6 +35,14 @@ app.get("/books/currently-reading", async (req, res) => {
   res.json(books);
 });
 
+app.get("/books/random", async (req, res) => {
+  const book = await Book.aggregate([
+    { $match: { exclusiveShelf: "to-read" } },
+    { $sample: { size: 1 } },
+  ]);
+  res.json(book[0]);
+});
+
 app.listen(3000, () =>
   console.log("Server is running on http://localhost:3000"),
 );

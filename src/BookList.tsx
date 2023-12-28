@@ -9,6 +9,7 @@ interface IBook {
 function BookList() {
   const [books, setBooks] = useState<IBook[]>([]);
   const [currentShelf, setCurrentShelf] = useState("");
+  const [randomBook, setRandomBook] = useState<IBook | null>(null);
 
   const fetchBooks = async (shelf: string = ""): Promise<void> => {
     try {
@@ -28,6 +29,16 @@ function BookList() {
       fetchBooks(currentShelf);
     }
   }, [currentShelf]);
+
+  const getRandomBook = async (): Promise<void> => {
+    try {
+      const res = await fetch("http://localhost:3000/books/random");
+      const randomBook: IBook = await res.json();
+      setRandomBook(randomBook);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="container p-10">
@@ -61,6 +72,18 @@ function BookList() {
           <p>{book.author}</p>
         </div>
       ))}
+      <button
+        className="mb-2 mr-2 bg-slate-200 px-4 py-2"
+        onClick={getRandomBook}
+      >
+        Losuj książkę do przeczytania
+      </button>
+      {randomBook && (
+        <div className="mb-4" key={randomBook._id}>
+          <h2 className="text-lg font-bold">{randomBook.title}</h2>
+          <p>{randomBook.author}</p>
+        </div>
+      )}
     </div>
   );
 }
