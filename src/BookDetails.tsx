@@ -79,26 +79,24 @@ function BookDetails() {
                   onClick={() => setShowDropdown(!showDropdown)}
                   className="text-gray-500 hover:text-gray-600"
                 >
-                  🖋️
+                  📚
                 </button>
                 {showDropdown && (
                   <div className="absolute mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
                     {shelves.map((shelf) => (
-                      <a
-                        href="#!"
+                      <span
                         key={shelf.value}
-                        onClick={(e) => {
-                          e.preventDefault();
+                        onClick={() => {
                           handleShelfChange(shelf.value);
                         }}
-                        className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${
+                        className={`block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${
                           book && book.exclusiveShelf === shelf.value
                             ? "font-bold"
                             : ""
                         }`}
                       >
                         {shelf.name}
-                      </a>
+                      </span>
                     ))}
                   </div>
                 )}
