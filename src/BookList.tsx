@@ -4,27 +4,61 @@ interface IBook {
   _id: string;
   title: string;
   author: string;
-  // more fields based on schema
 }
 
 function BookList() {
   const [books, setBooks] = useState<IBook[]>([]);
+  const [currentShelf, setCurrentShelf] = useState("");
+
+  const fetchBooks = async (shelf: string = ""): Promise<void> => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/books${shelf ? `/${shelf}` : ""}`,
+      );
+      const data = await res.json();
+      setBooks(data);
+      setCurrentShelf(shelf);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
-    fetch("http://localhost:3000/books")
-      .then((res) => res.json())
-      .then((data) => setBooks(data))
-      .catch((err) => console.error(err));
-  }, []);
+    if (currentShelf) {
+      fetchBooks(currentShelf);
+    }
+  }, [currentShelf]);
 
   return (
-    <div>
-      <h1>Books</h1>
+    <div className="container p-10">
+      <button
+        className="mb-2 mr-2 bg-slate-200 px-4 py-2"
+        onClick={() => fetchBooks()}
+      >
+        Wszystkie książki
+      </button>
+      <button
+        className="mb-2 mr-2 bg-slate-200 px-4 py-2"
+        onClick={() => fetchBooks("read")}
+      >
+        Przeczytane
+      </button>
+      <button
+        className="mb-2 mr-2 bg-slate-200 px-4 py-2"
+        onClick={() => fetchBooks("to-read")}
+      >
+        Do przeczytania
+      </button>
+      <button
+        className="mb-2 mr-2 bg-slate-200 px-4 py-2"
+        onClick={() => fetchBooks("currently-reading")}
+      >
+        Obecnie czytane
+      </button>
       {books.map((book) => (
-        <div key={book._id}>
-          <h2>{book.title}</h2>
+        <div className="mb-4" key={book._id}>
+          <h2 className="text-lg font-bold">{book.title}</h2>
           <p>{book.author}</p>
-          {/* Display more information about the book here */}
         </div>
       ))}
     </div>

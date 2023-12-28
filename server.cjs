@@ -20,6 +20,21 @@ app.get("/books", async (req, res) => {
   res.json(books);
 });
 
+app.get("/books/read", async (req, res) => {
+  const books = await Book.find({ exclusiveShelf: "read" });
+  res.json(books);
+});
+
+app.get("/books/to-read", async (req, res) => {
+  const books = await Book.find({ exclusiveShelf: "to-read" });
+  res.json(books);
+});
+
+app.get("/books/currently-reading", async (req, res) => {
+  const books = await Book.find({ exclusiveShelf: "currently-reading" });
+  res.json(books);
+});
+
 app.listen(3000, () =>
-  console.log("Server is running on http://localhost:3000")
+  console.log("Server is running on http://localhost:3000"),
 );
