@@ -43,6 +43,22 @@ app.get("/books/random", async (req, res) => {
   res.json(book[0]);
 });
 
+app.patch("/books/:id", async (req, res) => {
+  const id = req.params.id;
+  const newShelf = req.body.shelf;
+
+  try {
+    const updatedBook = await Book.updateOne(
+      { _id: id },
+      { exclusiveShelf: newShelf },
+    );
+    res.json(updatedBook);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
 app.listen(3000, () =>
   console.log("Server is running on http://localhost:3000"),
 );
