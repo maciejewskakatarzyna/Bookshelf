@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import BookList from "./BookList";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
