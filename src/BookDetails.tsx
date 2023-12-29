@@ -6,6 +6,10 @@ interface IBook {
   title: string;
   author: string;
   exclusiveShelf: string;
+  myRating?: number;
+  publisher?: string;
+  numberOfPages?: number;
+  yearPublished?: number;
 }
 
 interface IShelves {
@@ -106,8 +110,36 @@ function BookDetails() {
         <button onClick={() => navigate("/")}>⬅</button>
         {book ? (
           <div className="relative mt-6 rounded bg-white px-5 py-4 shadow">
-            <h2 className="text-lg font-bold text-gray-800">{book.title}</h2>
-            <p className="text-gray-700">{book.author}</p>
+            <h2 className="mb-2 text-xl font-bold text-gray-900">
+              {book.title}
+            </h2>
+            <p className="mb-5 text-lg italic text-gray-800">{book.author}</p>
+            <div className="mb-3 grid grid-cols-1 gap-2 text-sm">
+              {!!book.myRating && (
+                <div>
+                  <h3 className="font-semibold text-gray-800">Moja ocena</h3>
+                  <p className="text-gray-500">{book.myRating}</p>
+                </div>
+              )}
+              {!!book.publisher && (
+                <div>
+                  <h3 className="font-semibold text-gray-800">Wydawnictwo</h3>
+                  <p className="text-gray-500">{book.publisher}</p>
+                </div>
+              )}
+              {!!book.numberOfPages && (
+                <div>
+                  <h3 className="font-semibold text-gray-800">Liczba stron</h3>
+                  <p className="text-gray-500">{book.numberOfPages}</p>
+                </div>
+              )}
+              {!!book.yearPublished && (
+                <div>
+                  <h3 className="font-semibold text-gray-800">Rok wydania</h3>
+                  <p className="text-gray-500">{book.yearPublished}</p>
+                </div>
+              )}
+            </div>
             <div className="mt-3 flex items-center">
               <span className="relative inline-block">
                 <button
