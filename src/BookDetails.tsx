@@ -103,9 +103,7 @@ function BookDetails() {
   return (
     <div className="h-screen bg-gray-200">
       <div className="container mx-auto p-10">
-        <Link to="/" className="text-blue-600 hover:text-blue-800">
-          ⬅
-        </Link>
+        <button onClick={() => navigate("/")}>⬅</button>
         {book ? (
           <div className="relative mt-6 rounded bg-white px-5 py-4 shadow">
             <h2 className="text-lg font-bold text-gray-800">{book.title}</h2>
