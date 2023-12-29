@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Button from "./Button";
 
 interface IBook {
   _id: string;
@@ -63,30 +64,10 @@ function BookList() {
   return (
     <div className="h-full min-h-screen bg-gray-200">
       <div className="container mx-auto p-10">
-        <button
-          className="mb-2 mr-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
-          onClick={() => fetchBooks()}
-        >
-          Wszystkie książki
-        </button>
-        <button
-          className="mb-2 mr-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
-          onClick={() => fetchBooks("read")}
-        >
-          Przeczytane
-        </button>
-        <button
-          className="mb-2 mr-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
-          onClick={() => fetchBooks("to-read")}
-        >
-          Do przeczytania
-        </button>
-        <button
-          className="mb-2 mr-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
-          onClick={getRandomBook}
-        >
-          Losuj książkę do przeczytania
-        </button>
+        <Button onClick={() => fetchBooks()}>Wszystkie książki</Button>
+        <Button onClick={() => fetchBooks("read")}>Przeczytane</Button>
+        <Button onClick={() => fetchBooks("to-read")}>Do przeczytania</Button>
+        <Button onClick={getRandomBook}>Losuj książkę do przeczytania</Button>
         {randomBook && (
           <>
             <div
@@ -103,18 +84,8 @@ function BookList() {
               </Link>
               <p className="text-gray-700">{randomBook.author}</p>
             </div>
-            <button
-              className="mb-2 mr-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
-              onClick={startReading}
-            >
-              Zacznij czytać!
-            </button>
-            <button
-              className="mb-2 mr-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
-              onClick={getRandomBook}
-            >
-              Losuj następną
-            </button>
+            <Button onClick={startReading}>Zacznij czytać!</Button>
+            <Button onClick={getRandomBook}>Losuj następną</Button>
           </>
         )}
         {books.map((book) => (
