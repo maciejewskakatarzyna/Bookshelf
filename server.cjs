@@ -71,6 +71,22 @@ app.get("/books/:id", async (req, res) => {
   }
 });
 
+app.delete("/books/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const result = await Book.deleteOne({ _id: id });
+    if (result.deletedCount === 1) {
+      res.json({ message: `Successfully deleted book with id: ${id}` });
+    } else {
+      res.status(404).json({ message: `No book with id: ${id} found` });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
 app.listen(3000, () =>
   console.log("Server is running on http://localhost:3000"),
 );

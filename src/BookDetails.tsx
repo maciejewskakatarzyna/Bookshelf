@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 interface IBook {
   _id: string;
@@ -23,6 +23,9 @@ function BookDetails() {
   const { id } = useParams<{ id: string }>();
   const [book, setBook] = useState<IBook | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -63,6 +66,40 @@ function BookDetails() {
     setShowDropdown(false);
   };
 
+  const handleDeleteBook = async () => {
+    if (book) {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/books/${book._id}`,
+          {
+            method: "DELETE",
+          },
+        );
+        if (response.ok) {
+          navigate("/");
+        } else {
+          console.error(`Failed to delete book ${book._id}`);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    setIsModalOpen(false);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+    setIsModalOpen(false);
+  };
+
+  const stopPropagation = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <div className="h-screen bg-gray-200">
       <div className="container mx-auto p-10">
@@ -70,7 +107,7 @@ function BookDetails() {
           ⬅
         </Link>
         {book ? (
-          <div className="mt-6 rounded bg-white px-5 py-4 shadow">
+          <div className="relative mt-6 rounded bg-white px-5 py-4 shadow">
             <h2 className="text-lg font-bold text-gray-800">{book.title}</h2>
             <p className="text-gray-700">{book.author}</p>
             <div className="mt-3 flex items-center">
@@ -108,10 +145,60 @@ function BookDetails() {
                 }
               </span>
             </div>
+            <button
+              className="absolute bottom-4 right-4 mt-3 rounded"
+              onClick={openModal}
+            >
+              🗑️
+            </button>
           </div>
         ) : (
           <div className="rounded bg-white px-5 py-4 shadow">
             <p className="text-gray-500">Loading...</p>
+          </div>
+        )}
+        {isModalOpen && (
+          <div
+            className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50"
+            onClick={closeModal}
+          >
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="message-title"
+              onClick={stopPropagation}
+              className="inline-block transform rounded-lg bg-white p-6 text-left shadow-xl transition-all sm:w-full sm:max-w-lg sm:align-middle"
+            >
+              <div className="text-left">
+                <h3
+                  className="text-lg font-medium text-gray-900"
+                  id="message-title"
+                >
+                  Delete Book
+                </h3>
+                <div className="mt-2">
+                  <p className="text-sm text-gray-500">
+                    Are you sure you want to delete this book?
+                  </p>
+                </div>
+              </div>
+              <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                <button
+                  onClick={handleDeleteBook}
+                  type="button"
+                  className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={closeModal}
+                  type="button"
+                  className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
+                >
+                  No
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>

@@ -67,6 +67,9 @@ function BookList() {
         <Button onClick={() => fetchBooks()}>Wszystkie książki</Button>
         <Button onClick={() => fetchBooks("read")}>Przeczytane</Button>
         <Button onClick={() => fetchBooks("to-read")}>Do przeczytania</Button>
+        <Button onClick={() => fetchBooks("currently-reading")}>
+          Teraz czytam
+        </Button>
         <Button onClick={getRandomBook}>Losuj książkę do przeczytania</Button>
         {randomBook && (
           <>
