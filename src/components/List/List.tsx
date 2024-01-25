@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Button from "./Button";
+import Button from "../Button/Button";
 
 interface IBook {
   _id: string;
@@ -8,7 +8,7 @@ interface IBook {
   author: string;
 }
 
-function BookList() {
+export function List() {
   const [books, setBooks] = useState<IBook[]>([]);
   const [currentShelf, setCurrentShelf] = useState("");
   const [randomBook, setRandomBook] = useState<IBook | null>(null);
@@ -109,5 +109,3 @@ function BookList() {
     </div>
   );
 }
-
-export default BookList;

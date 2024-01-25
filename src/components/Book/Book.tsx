@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 interface IBook {
   _id: string;
@@ -23,7 +23,7 @@ const shelves: IShelves[] = [
   { name: "Chcę przeczytać", value: "to-read" },
 ];
 
-function BookDetails() {
+export function Book() {
   const { id } = useParams<{ id: string }>();
   const [book, setBook] = useState<IBook | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -235,5 +235,3 @@ function BookDetails() {
     </div>
   );
 }
-
-export default BookDetails;
