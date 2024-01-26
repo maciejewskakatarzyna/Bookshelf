@@ -71,6 +71,10 @@ export function List() {
           Teraz czytam
         </Button>
         <Button onClick={getRandomBook}>Losuj książkę do przeczytania</Button>
+        <Link to={"/add-book"}>
+          {" "}
+          <Button>Dodaj książkę</Button>
+        </Link>
         {randomBook && (
           <>
             <div
