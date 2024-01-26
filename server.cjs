@@ -23,22 +23,14 @@ mongoose
   .catch((error) => console.log("Connection failed!", error));
 
 app.get("/books", async (req, res) => {
-  const books = await Book.find();
-  res.json(books);
-});
+  const { exclusiveShelf } = req.query;
 
-app.get("/books/read", async (req, res) => {
-  const books = await Book.find({ exclusiveShelf: "read" });
-  res.json(books);
-});
+  let filter = {};
+  if (exclusiveShelf) {
+    filter.exclusiveShelf = exclusiveShelf;
+  }
 
-app.get("/books/to-read", async (req, res) => {
-  const books = await Book.find({ exclusiveShelf: "to-read" });
-  res.json(books);
-});
-
-app.get("/books/currently-reading", async (req, res) => {
-  const books = await Book.find({ exclusiveShelf: "currently-reading" });
+  const books = await Book.find(filter);
   res.json(books);
 });
 

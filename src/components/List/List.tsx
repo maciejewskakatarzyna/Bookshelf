@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../Button/Button";
+import { Layout } from "../Layout/Layout";
 
 interface IBook {
   _id: string;
@@ -15,9 +16,11 @@ export function List() {
 
   const fetchBooks = async (shelf: string = ""): Promise<void> => {
     try {
-      const res = await fetch(
-        `http://localhost:3000/books${shelf ? `/${shelf}` : ""}`,
-      );
+      let url = `http://localhost:3000/books`;
+      if (shelf) {
+        url += `?exclusiveShelf=${shelf}`;
+      }
+      const res = await fetch(url);
       const data = await res.json();
       setBooks(data);
       setCurrentShelf(shelf);
@@ -28,9 +31,7 @@ export function List() {
   };
 
   useEffect(() => {
-    if (currentShelf) {
-      fetchBooks(currentShelf);
-    }
+    fetchBooks(currentShelf);
   }, [currentShelf]);
 
   const getRandomBook = async (): Promise<void> => {
@@ -62,7 +63,7 @@ export function List() {
   };
 
   return (
-    <div className="h-full min-h-screen bg-gray-200">
+    <Layout>
       <div className="container mx-auto p-10">
         <Button onClick={() => fetchBooks()}>Wszystkie książki</Button>
         <Button onClick={() => fetchBooks("read")}>Przeczytane</Button>
@@ -71,10 +72,6 @@ export function List() {
           Teraz czytam
         </Button>
         <Button onClick={getRandomBook}>Losuj książkę do przeczytania</Button>
-        <Link to={"/add-book"}>
-          {" "}
-          <Button>Dodaj książkę</Button>
-        </Link>
         {randomBook && (
           <>
             <div
@@ -110,6 +107,6 @@ export function List() {
           </div>
         ))}
       </div>
-    </div>
+    </Layout>
   );
 }
