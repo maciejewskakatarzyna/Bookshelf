@@ -7,7 +7,14 @@ const app = express();
 
 const dbUri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.zpjboon.mongodb.net/books?retryWrites=true&w=majority`;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: "GET,POST,PATCH,DELETE",
+    allowedHeaders: "Content-Type",
+  }),
+);
+
 app.use(express.json());
 
 mongoose
@@ -41,6 +48,21 @@ app.get("/books/random", async (req, res) => {
     { $sample: { size: 1 } },
   ]);
   res.json(book[0]);
+});
+
+app.post("/books", async (req, res) => {
+  const book = new Book({
+    title: req.body.title,
+    author: req.body.author,
+    exclusiveShelf: req.body.exclusiveShelf,
+  });
+
+  try {
+    const newBook = await book.save();
+    res.status(201).json(newBook);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
 });
 
 app.patch("/books/:id", async (req, res) => {
